@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+{% block extrahead %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+
+<script src="{{ url_for('static', filename='js/masonry.pkgd.min.js') }}"></script>
+<style>
+.picture_index li {width:150px;  height: 150px;}
+.picture_index li img{max-width:100%; height: auto;}
+.thumbnail a>img { height: auto; max-width: 100%;}
+.thumbnail { min-height: 350px; width: auto;}
+
+img {}
+</style>
+
+{% endblock %}
+{%block body %}
+
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-xs-4">
+        <form action="{{ url_for('pictures') }}" method="post" class="form-inline">
+            <input type="text" name="directory" class="form-control" placeholder="Directory">  
+            <button type="submit" value="Login" class="btn btn-default">Create Album</button>
+        </form>
+    </div>
+    </div>
+    <h2>ALBUMS</h2>
+<div id="columns">
+
+        {% for root in pictures %}
+            <figure>
+            <a href="{{ url_for('albums', slug=root) }}">
+            <h3 class="text-center">{{ pictures[root].folder_name|truncate(50, True) }}</h3>
+                    <img src="
+                    {% if pictures[root].thumb %}
+                    {{ url_for('static',filename=pictures[root].relative_path+'/'+pictures[root].thumb)}}
+                    {% else %}
+                    {{ url_for('static',filename='images/tm.jpg') }}
+                    {% endif%}
+                    " data-src="holder.js/300x300">
+                </a>
+            <figcaption>{{ pictures[root].folder_name|truncate(40, True)|title}}</figcaption>
+            </figure>
+        {% endfor %}
+        </div>
+
+
+    
+    </div>
+
+
+</div>
+
+{% endblock %}
